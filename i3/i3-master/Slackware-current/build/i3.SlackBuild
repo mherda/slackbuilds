@@ -59,8 +59,6 @@ find . \
 # instead of ./configure
 sed -i "s/local\/lib/lib$LIBDIRSUFFIX/" common.mk
 
-# Disable Pango support - requires cairo built with XCB support
-#sed -i "/DPANGO/s/1/0/" common.mk
 # make building verbose
 sed -i "/^\.SILENT/d" common.mk
 
@@ -73,9 +71,6 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 
 # Don't clobber the default config
 mv $PKG/etc/i3/config $PKG/etc/i3/config.new
-
-# Make xterm default terminal
-sed -i 's/urxvt/xterm/' $PKG/etc/i3/config.new
 
 # KDM menu entry
 mkdir -p $PKG/usr/share/apps/kdm/sessions
@@ -93,9 +88,11 @@ cp man/*.1 $PKG/usr/man/man1
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  DEPENDS LICENSE docs/* \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a DEPENDS LICENSE RELEASE-NOTES-* $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a docs/* $PKG/usr/doc/$PRGNAM-$VERSION/txt
+( cd $PKG/usr/doc/$PRGNAM-$VERSION/txt
+  mv *.html *.png *.css ../html/
+	  rm i3-pod2html *.conf *.dia *.mk Makefile )
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
