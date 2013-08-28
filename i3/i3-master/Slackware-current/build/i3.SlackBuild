@@ -56,14 +56,9 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# instead of ./configure
-sed -i "s/local\/lib/lib$LIBDIRSUFFIX/" common.mk
-
-# make building verbose
-sed -i "/^\.SILENT/d" common.mk
-
+# V=1 make build verbose
 CFLAGS="$SLKCFLAGS" \
-  make
+  make V=1
 make install DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
@@ -83,16 +78,17 @@ chmod 0755 $PKG/etc/X11/xinit/xinitrc.i3
 
 # Install man pages
 mkdir -p $PKG/usr/man/man1
-cd man && make && cd ..
+make -C man
+make -C docs
 cp man/*.1 $PKG/usr/man/man1
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
-mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION/html $PKG/usr/doc/$PRGNAM-$VERSION/txt
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION/html $PKG/usr/doc/$PRGNAM-$VERSION/txt 
 cp -a DEPENDS LICENSE RELEASE-NOTES-* $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a docs/* $PKG/usr/doc/$PRGNAM-$VERSION/txt
 ( cd $PKG/usr/doc/$PRGNAM-$VERSION/txt
   mv *.html *.png *.css ../html/
-	  rm i3-pod2html *.conf *.dia *.mk Makefile )
+  rm i3-pod2html *.conf *.dia *.mk Makefile )
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
