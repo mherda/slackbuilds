@@ -92,7 +92,7 @@ cp -a DEPENDS LICENSE RELEASE-NOTES-* $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a docs/* $PKG/usr/doc/$PRGNAM-$VERSION/txt
 ( cd $PKG/usr/doc/$PRGNAM-$VERSION/txt
   mv *.html *.png *.css ../html/
-	  rm i3-pod2html *.conf *.dia *.mk Makefile )
+  rm i3-pod2html *.conf *.dia *.mk Makefile )
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
