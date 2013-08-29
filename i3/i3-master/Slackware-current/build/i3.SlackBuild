@@ -66,6 +66,8 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 
 # Don't clobber the default config
 mv $PKG/etc/i3/config $PKG/etc/i3/config.new
+mv $PKG/etc/i3/config.keycodes $PKG/etc/i3/config.keycodes.new
+
 
 # KDM menu entry
 mkdir -p $PKG/usr/share/apps/kdm/sessions
