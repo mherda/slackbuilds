@@ -1,8 +1,0 @@
-Please note that this SlackBuild will NOT work on Slackware 14 or older. 
-
-Thanks to the recent (22/02/2013) update in Slackware-current in which 
-cairo was updated to version 1.12.14 along with the XCB backend, it is
-possible to build i3-4.4 without any modifications in the -current
-branch.
-
-If you'd like to run i3-4.4 on Slackware 14, you can try building it using the i3-master build for Slackware-14. Generally, it is recommended to use the master branch as it contains numerous bug fixes since the release of i3-4.4. 
