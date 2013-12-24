@@ -1,0 +1,11 @@
+By default this SlackBuild script builds the git 'master' branch
+of the i3 window manager. The 'master' branch contains the latest
+stable release with all the bug fixes to date.
+
+Another git testing branch is 'next' which includes features that
+are going to be present in the next release.
+
+To try i3 from the next branch, you need to run the script as follows:
+
+VERSION=next ./i3.SlackBuild
+

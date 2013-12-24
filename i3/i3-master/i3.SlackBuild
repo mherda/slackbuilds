@@ -8,7 +8,7 @@
 # Updated by Marcin Herda <mherda@slackword.net>
 
 PRGNAM=i3
-VERSION="master"
+VERSION=${VERSION:-master}
 BUILD=$(date +"%m%d%Y")
 TAG=${TAG:-_mh}
 GITROOT=git://code.i3wm.org/i3
@@ -49,6 +49,11 @@ rm -rf $PRGNAM
 
 git clone $GITROOT
 cd $PRGNAM
+
+if [ "$VERSION" != "master" ]; then
+	git checkout $VERSION
+fi
+
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
