@@ -1,6 +1,6 @@
-PRGNAM="perl-AnyEvent-Handle"
+PRGNAM="perl-AnyEvent"
 VERSION="7.07"
-HOMEPAGE="https://metacpan.org/release/AnyEvent::Handle"
+HOMEPAGE="https://metacpan.org/release/AnyEvent"
 DOWNLOAD="http://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/AnyEvent-7.07.tar.gz"
 MD5SUM="e5ef99081b2acc3df80851838f9acfc4"
 DOWNLOAD_x86_64=""

@@ -1,12 +1,15 @@
 #!/bin/sh
 
-# Slackware build script for i3status
+# Slackware build script for i3wm.
 
-# Written by Eugene Suter (easuter@gmail.com)
-# Updated by Marcin Herda (mherda@slackword.net)
 
-PRGNAM=i3status
-VERSION=${VERSION:-2.9}
+# Written by Eugene Wissner <belka.ew@gmail.com>
+# Updated by Eugene Suter <easuter@gmail.com>
+# Updated by Marcin Herda <mherda@slackword.net>
+# Cleaning up docs by ponce
+
+PRGNAM=i3
+VERSION=${VERSION:-4.10.3}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -52,24 +55,41 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-CFLAGS="$SLKCFLAGS" \
-LDFLAGS="-lm" \
-make
+# V=1 make build verbose
+CFLAGS="$SLKCFLAGS" make V=1
 make install DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-# Don't clobber the config file
-mv $PKG/etc/i3status.conf $PKG/etc/i3status.conf.new
+# Don't clobber the default config
+mv $PKG/etc/i3/config $PKG/etc/i3/config.new
+mv $PKG/etc/i3/config.keycodes $PKG/etc/i3/config.keycodes.new
 
-mv $PKG/usr/share/man $PKG/usr/
-rmdir $PKG/usr/share
+# Make xterm default terminal
+sed -i 's/i3-sensible-terminal/xterm/' $PKG/etc/i3/config.new
+
+# KDM menu entry
+mkdir -p $PKG/usr/share/apps/kdm/sessions
+ln -s /usr/share/xsessions/i3.desktop $PKG/usr/share/apps/kdm/sessions/
+
+# Install an xinitrc script
+mkdir -p $PKG/etc/X11/xinit
+cat $CWD/xinitrc.i3 > $PKG/etc/X11/xinit/xinitrc.i3
+chmod 0755 $PKG/etc/X11/xinit/xinitrc.i3
+
+# Install man pages
+make -C man ; make -C docs
+mkdir -p $PKG/usr/man/man1
+cp man/*.1 $PKG/usr/man/man1
 find $PKG/usr/man -type f -exec gzip -9 {} \;
-for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
-mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a LICENSE $PKG/usr/doc/$PRGNAM-$VERSION
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION/html $PKG/usr/doc/$PRGNAM-$VERSION/txt
+cp -a DEPENDS LICENSE RELEASE-NOTES-* $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a docs/* $PKG/usr/doc/$PRGNAM-$VERSION/txt
+( cd $PKG/usr/doc/$PRGNAM-$VERSION/txt
+  mv *.html *.png *.css ../html/
+  rm i3-pod2html *.conf *.dia *.mk Makefile )
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

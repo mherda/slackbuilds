@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# Slackware build script for perl-AnyEvent-Handle
+# Slackware build script for perl-AnyEvent-I3
 # Written by Marcin Herda <mherda@slackword.net>
 
-PRGNAM=perl-AnyEvent-Handle
-VERSION=${VERSION:-7.07}
+PRGNAM=perl-AnyEvent-I3
+VERSION=${VERSION:-0.15}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-SRCNAM="$(printf $PRGNAM | cut -d- -f2)"
+SRCNAM="$(printf $PRGNAM | cut -d- -f2-)"
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -70,7 +70,7 @@ find $PKG -depth -type d -empty -delete || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  Changes README MANIFEST COPYING \
+  Changes README MANIFEST \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
